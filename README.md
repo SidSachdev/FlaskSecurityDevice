@@ -23,12 +23,16 @@ sensor_reading_time (Used Epoch Converter - Dates From 4th July 2017 until 4th J
 ## Usage
 
 As the project is live, you aren't required to install/worry about dependencies
-###### A requirements.txt has still been provided to run locally (Just replace the ec2 IP with localhost:8000/
+
+###### A requirements.txt has still been provided to run locally Just replace the ec2 IP with localhost:8000/
+###### Will require additional authentication to access the DB (New Security Group will be added based on requirement)
+
 Commands will return a JSON value
 
 ```bash
-Browser (Reccomended): http://ec2-54-237-164-186.compute-1.amazonaws.com:8000/getdata/1/1501868891/1591409691
+Browser: http://ec2-54-237-164-186.compute-1.amazonaws.com:8000/getdata/1/1501868891/1591409691
 Terminal: curl ec2-54-237-164-186.compute-1.amazonaws.com:8000/getdata/43/1501868891/1591409691
+Terminal(POST): curl -i -H "Content-Type: application/json" -X POST -d '{"device_uuid": 14, "sensor_type": "humidity", "sensor_value": 99, "sensor_reading_time": 1500052521}' http://ec2-54-237-164-186.compute-1.amazonaws.com:8000/postdata
 ```
 
 ## Design Decisions
@@ -74,7 +78,7 @@ sensor_type = humidity
 sensor_value = 100
 sensor_reading_time = 1593292
 
-http://ec2-54-237-164-186.compute-1.amazonaws.com:8000/postdata?device_uuid=4&sensor_type=humidity&sensor_value=100&sensor_reading_time=1593292
+curl -i -H "Content-Type: application/json" -X POST -d '{"device_uuid": 14, "sensor_type": "humidity", "sensor_value": 99, "sensor_reading_time": 1500052521}' http://ec2-54-237-164-186.compute-1.amazonaws.com:8000/postdata
 
 ```
 
@@ -128,7 +132,10 @@ Percentage of the requests served within a certain time (ms)
  100%   4002 (longest request)
 ```
 
+## Future Advancements
 
+- PUT Method will allow us to update data based on parameters
+- DELETE Method will allow the deletion of certain values if deemed invalid
 
 ### Author
 
