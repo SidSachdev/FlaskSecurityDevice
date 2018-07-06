@@ -12,6 +12,9 @@ class InvalidData(ex.HTTPException):
         code = 400
         description = 'Data provided is Invalid or Insufficient'
 
+        code = 405
+        description2 = 'Invalid Request Type'
+
 
 ex.default_exceptions[400] = InvalidData
 abort = ex.Aborter()
@@ -45,48 +48,67 @@ def explain(e):
     return "Data provided is Invalid or Insufficient"
 
 
-@app.route('/postdata', methods=['GET', 'POST', 'PUT'])
+@app.errorhandler(405)
+def explain2(e):
+    return "Invalid Request: For POST Methods use JSON (Refer to Documentation For Usage)"
+
+
+@app.route('/postdata', methods=['POST'])
 def post_data():
-    device_uuid = int(request.args.get("device_uuid"))
+    if request.method == 'POST':
+        if not request.json or not 'device_uuid' in request.json:
+            abort(405)
 
-    sensor_type = request.args.get("sensor_type")
-    sensor_types = ["humidity", "temperature"]
-    if sensor_type not in sensor_types:
-        return abort(400)
+        table = dynamodb.Table('sensorMain')
 
-    sensor_value = request.args.get("sensor_value")
-    if float(sensor_value) < 0.0 or float(sensor_value) > 100.0:
-        return abort(400)
+        device_uuid = int(request.json['device_uuid'])
 
-    sensor_reading_time = int(request.args.get("sensor_reading_time"))
-    # example.com?arg1=value1&arg2=value2
+        sensor_type = (request.json['sensor_type'])
+        sensor_types = ["humidity", "temperature"]
+        if sensor_type not in sensor_types:
+            return abort(400)
 
-    table = dynamodb.Table('sensorMain')
-    response = table.put_item(
-        Item={
-            'device_uuid': device_uuid,
-            'sensor_type': sensor_type,
-            'sensor_value': sensor_value,
-            'sensor_reading_time': sensor_reading_time
-        }
-    )
+        sensor_value = (request.json['sensor_value'])
+        if float(sensor_value) < 0.0 or float(sensor_value) > 100.0:
+            return abort(400)
 
-    return jsonify(response)
+        sensor_reading_time = int(request.json['sensor_reading_time'])
+
+        response = table.put_item(
+            Item={
+
+                'device_uuid': device_uuid,
+                'sensor_type': sensor_type,
+                'sensor_value': sensor_value,
+                'sensor_reading_time': sensor_reading_time
+            }
+        )
+
+        return jsonify(response)
+
+    else:
+
+        abort(405)
 
 
 @app.route('/getdata/<device_uuid>/<start_time>/<end_time>', methods=['GET'])
 def get_data(device_uuid, start_time, end_time):
-    device_uuid = int(device_uuid)
-    start_time = int(start_time)
-    end_time = int(end_time)
-    table = dynamodb.Table('sensorMain')
+    if request.method == "GET":
 
-    response = table.query(
-        KeyConditionExpression=Key('device_uuid').eq(device_uuid)
-                               & Key('sensor_reading_time').between(start_time, end_time)
-    )
+        device_uuid = int(device_uuid)
+        start_time = int(start_time)
+        end_time = int(end_time)
+        table = dynamodb.Table('sensorMain')
 
-    return jsonify(response)
+        response = table.query(
+            KeyConditionExpression=Key('device_uuid').eq(device_uuid)
+                                   & Key('sensor_reading_time').between(start_time, end_time)
+        )
+
+        return jsonify(response)
+
+    else:
+        abort(405)
 
 
 if __name__ == '__main__':
