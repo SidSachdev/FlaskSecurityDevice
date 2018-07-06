@@ -39,6 +39,7 @@ app.json_encoder = DecimalEncoder
 def hello_world():
     return 'Welcome: Canary Device Data Center'
 
+
 @app.errorhandler(400)
 def explain(e):
     return "Data provided is Invalid or Insufficient"
@@ -72,9 +73,9 @@ def post_data():
 
     return jsonify(response)
 
+
 @app.route('/getdata/<device_uuid>/<start_time>/<end_time>', methods=['GET'])
 def get_data(device_uuid, start_time, end_time):
-
     device_uuid = int(device_uuid)
     start_time = int(start_time)
     end_time = int(end_time)
