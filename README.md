@@ -25,7 +25,7 @@ sensor_reading_time (Used Epoch Converter - Dates From 4th July 2017 until 4th J
 As the project is live, you aren't required to install/worry about dependencies
 
 ###### A requirements.txt has still been provided to run locally Just replace the ec2 IP with localhost:8000/
-###### Will require additional authentication to access the DB (New Security Group will be added based on requirement)
+###### Might require additional authentication to access the DB (New Security Group will be added based on requirement)
 
 Commands will return a JSON value
 
@@ -48,7 +48,10 @@ Terminal(POST): curl -i -H "Content-Type: application/json" -X POST -d '{"device
   - With the auto scaling based on usability and the ability to set the priority of reads or writes, it was a great option
   - The "scan" on the db is set to the sensor_reading_time to provide maximum speed
   - insertData.py is provided for an easy json upload to the db
-
+- Important Note:
+  - gunicorn has been used as it's a wsgi application; the applciation is self-sufficient AS WELL. 
+  - Flask parameters for "threaded" has been set to TRUE. With threaded=True requests are each handled in a new thread. 
+  - How many threads the server can handle concurrently depends entirely on the OS and what limits are pre-set on the number of threads per process.
 
 ## Tests 
 
