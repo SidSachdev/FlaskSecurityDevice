@@ -137,13 +137,11 @@ http://ec2-54-237-164-186.compute-1.amazonaws.com:8000/getdata/43/1501868891/159
 
 
 3. Insert New Data for uuid 
-127.0.0.1:5000/postdata?device_uuid=4&sensor_type=humidity&sensor_value=100&sensor_reading_time=1593292
 
 device_uuid = 4
 sensor_type = humidity
 sensor_value = 100
 sensor_reading_time = 1593292
 
-http://ec2-54-237-164-186.compute-1.amazonaws.com:8000/postdata?device_uuid=4&sensor_type=humidity&sensor_value=100&sensor_reading_time=1593292
-
+curl -i -H "Content-Type: application/json" -X POST -d '{"device_uuid": 14, "sensor_type": "humidity", "sensor_value": 99, "sensor_reading_time": 1500052521}' http://ec2-54-237-164-186.compute-1.amazonaws.com:8000/postdata
 """
