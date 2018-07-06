@@ -5,7 +5,7 @@ Canary Security Data Center
 
 - Flask (Python) (Required)
 - AWS EC2 (Project is Live for testing)
-- [AWS DynamoDB](https://https://aws.amazon.com/dynamodb/ "AWS DynamoDB") (Fast & Flexible DB Service (Recommended for IoT Devices))
+- [AWS DynamoDB](https://aws.amazon.com/dynamodb/ "AWS DynamoDB") (Fast & Flexible DB Service (Recommended for IoT Devices))
 - Gunicorn (Gunicorn 'Green Unicorn' is a Python WSGI HTTP Server for UNIX (Allows to run it asynchronously))
 - Gevent (To add workers (Used with Gunicorn))
 
