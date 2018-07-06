@@ -82,7 +82,7 @@ def get_data(device_uuid, start_time, end_time):
     table = dynamodb.Table('sensorMain')
 
     response = table.query(
-        KeyConditionExpression=Key('device_id').eq(device_uuid)
+        KeyConditionExpression=Key('device_uuid').eq(device_uuid)
                                & Key('sensor_reading_time').between(start_time, end_time)
     )
 
@@ -91,4 +91,12 @@ def get_data(device_uuid, start_time, end_time):
 
 if __name__ == '__main__':
     app.debug = False
-    app.run(port=5000, threaded=True)
+    app.run(port=8000, threaded=True)
+
+"""
+Test Runs Provided:
+
+
+
+
+"""
