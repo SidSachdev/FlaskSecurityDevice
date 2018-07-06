@@ -71,3 +71,23 @@ def post_data():
     )
 
     return jsonify(response)
+
+@app.route('/getdata/<device_id>/<start_time>/<end_time>', methods=['GET'])
+def get_data(device_id, start_time, end_time):
+
+    device_id = int(device_id)
+    start_time = int(start_time)
+    end_time = int(end_time)
+    table = dynamodb.Table('sensorMain')
+
+    response = table.query(
+        KeyConditionExpression=Key('device_id').eq(device_id)
+                               & Key('sensor_reading_time').between(start_time, end_time)
+    )
+
+    return jsonify(response)
+
+
+if __name__ == '__main__':
+    app.debug = False
+    app.run(port=5000, threaded=True)
