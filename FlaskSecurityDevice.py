@@ -46,7 +46,7 @@ def explain(e):
 
 @app.route('/postdata', methods=['GET', 'POST', 'PUT'])
 def post_data():
-    device_id = int(request.args.get("device_id"))
+    device_uuid = int(request.args.get("device_uuid"))
 
     sensor_type = request.args.get("sensor_type")
     sensor_types = ["humidity", "temperature"]
@@ -63,7 +63,7 @@ def post_data():
     table = dynamodb.Table('sensorMain')
     response = table.put_item(
         Item={
-            'device_id': device_id,
+            'device_uuid': device_uuid,
             'sensor_type': sensor_type,
             'sensor_value': sensor_value,
             'sensor_reading_time': sensor_reading_time
@@ -72,16 +72,16 @@ def post_data():
 
     return jsonify(response)
 
-@app.route('/getdata/<device_id>/<start_time>/<end_time>', methods=['GET'])
-def get_data(device_id, start_time, end_time):
+@app.route('/getdata/<device_uuid>/<start_time>/<end_time>', methods=['GET'])
+def get_data(device_uuid, start_time, end_time):
 
-    device_id = int(device_id)
+    device_uuid = int(device_uuid)
     start_time = int(start_time)
     end_time = int(end_time)
     table = dynamodb.Table('sensorMain')
 
     response = table.query(
-        KeyConditionExpression=Key('device_id').eq(device_id)
+        KeyConditionExpression=Key('device_id').eq(device_uuid)
                                & Key('sensor_reading_time').between(start_time, end_time)
     )
 
