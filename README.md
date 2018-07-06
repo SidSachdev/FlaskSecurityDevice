@@ -78,6 +78,58 @@ http://ec2-54-237-164-186.compute-1.amazonaws.com:8000/postdata?device_uuid=4&se
 
 ```
 
+## Apache Benchmark Testing Results (Concurrency level 100) (Total Requests 200)
+
+```
+This is ApacheBench, Version 2.3 <$Revision: 1528965 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient)
+Completed 100 requests
+Completed 200 requests
+Finished 200 requests
+
+
+Server Software:        gunicorn/19.9.0
+Server Hostname:        localhost
+Server Port:            8000
+
+Document Path:          /getdata/1/1501868891/1591409691
+Document Length:        9393 bytes
+
+Concurrency Level:      100
+Time taken for tests:   4.820 seconds
+Complete requests:      200
+Failed requests:        0
+Total transferred:      1909400 bytes
+HTML transferred:       1878600 bytes
+Requests per second:    41.50 [#/sec] (mean)
+Time per request:       2409.754 [ms] (mean)
+Time per request:       24.098 [ms] (mean, across all concurrent requests)
+Transfer rate:          386.90 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0   14  14.0     19      35
+Processing:   533 1918 761.2   1847    3967
+Waiting:      523 1912 762.9   1838    3967
+Total:        533 1932 764.1   1864    4002
+
+Percentage of the requests served within a certain time (ms)
+  50%   1864
+  66%   2293
+  75%   2497
+  80%   2641
+  90%   2723
+  95%   2932
+  98%   3963
+  99%   3988
+ 100%   4002 (longest request)
+```
+
+
+
 ### Author
 
 ```python
