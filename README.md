@@ -22,6 +22,8 @@ sensor_reading_time (Used Epoch Converter - Dates From 4th July 2017 until 4th J
 
 ## Usage
 
+As the project is live, you aren't required to install/worry about dependencies
+###### A requirements.txt has still been provided to run locally (Just replace the ec2 IP with localhost:8000/
 Commands will return a JSON value
 
 ```bash
@@ -29,11 +31,19 @@ Browser (Reccomended):
 Terminal: curl 
 ```
 
+## Design Decisions
 
+- Flask: 
+  - The project didn't require any API authentication and authorization, so didn't require Django. 
+  - Flask is generally faster in performance compared to Django as it is much minimal in design
+  - Didn't need the ORM used in Django
+  - Django relies heavily on it's relational database integration. Flask allowed the ease of use with NoSQL  
 
-
-
-
+- AWS DynamoDB:
+  - DynamoDB NoSQL allows great flexibility and is recommended for IoT devices for the constant stream of data 
+  - With the auto scaling based on usability and the ability to set the priority of reads or writes, it was a great option
+  - The "scan" on the db is set to the sensor_reading_time to provide maximum speed
+  - insertData.py is provided for an easy json upload to the db
 
 
 ### Author
